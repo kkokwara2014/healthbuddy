@@ -11,10 +11,6 @@ class _DocAppointmentScreenState extends State<DocAppointmentScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Appointments"),
-      ),
-      drawer: const Drawer(),
       body: const Center(
         child: Text("Appointment Screen"),
       ),

@@ -15,3 +15,6 @@ const appointmentImage = "assets/images/appointment.png";
 const medicalprofImage = "assets/images/medicalprof.png";
 //medical banner image
 const medicalbannerImage = "assets/images/medicalbanner.jpg";
+//sign up option images
+const doctorImage = "assets/images/doctor.png";
+const patientImage = "assets/images/patient.png";

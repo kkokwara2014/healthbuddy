@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:health_buddy/constants/images.dart';
+import 'package:health_buddy/models/signup_option_model.dart';
 import 'package:health_buddy/providers/auth_provider.dart';
+import 'package:health_buddy/screens/authentication/check_loggedin.dart';
 import 'package:health_buddy/screens/authentication/login.dart';
-import 'package:health_buddy/screens/dashboard/landing_page.dart';
 import 'package:health_buddy/widgets/button_widget.dart';
 import 'package:health_buddy/widgets/text_input.dart';
 import 'package:provider/provider.dart';
 
 class RegisterScreen extends StatefulWidget {
-  const RegisterScreen({super.key});
+  const RegisterScreen({super.key, required this.signupOptionModel});
+  final SignupOptionModel signupOptionModel;
 
   @override
   State<RegisterScreen> createState() => _RegisterScreenState();
@@ -17,6 +19,25 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   final _formKey = GlobalKey<FormState>();
+
+  //getting inputs from the user
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
+
+  @override
+  void dispose() {
+    nameController.dispose();
+    emailController.dispose();
+    phoneController.dispose();
+    passwordController.dispose();
+    confirmPasswordController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthProvider>(context);
@@ -36,9 +57,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   const SizedBox(
                     height: 10,
                   ),
-                  const Text(
-                    "Sign Up",
-                    style: TextStyle(
+                  Text(
+                    "Sign Up as ${widget.signupOptionModel.name}",
+                    style: const TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.w700,
                     ),
@@ -47,7 +68,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     height: 15,
                   ),
                   MyTextInput(
-                    controller: authProvider.nameController,
+                    controller: nameController,
                     hideText: false,
                     hintText: "Name",
                     prefixicon: Icons.person_2_outlined,
@@ -57,7 +78,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     height: 10,
                   ),
                   MyTextInput(
-                    controller: authProvider.emailController,
+                    controller: emailController,
                     hideText: false,
                     hintText: "Email",
                     prefixicon: Icons.email,
@@ -67,7 +88,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     height: 10,
                   ),
                   MyTextInput(
-                    controller: authProvider.phoneController,
+                    controller: phoneController,
                     hideText: false,
                     hintText: "Phone",
                     prefixicon: Icons.phone,
@@ -77,7 +98,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     height: 10,
                   ),
                   MyTextInput(
-                    controller: authProvider.passwordController,
+                    controller: passwordController,
                     hideText: true,
                     hintText: "Password",
                     prefixicon: Icons.lock,
@@ -87,7 +108,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     height: 10,
                   ),
                   MyTextInput(
-                    controller: authProvider.confirmPasswordController,
+                    controller: confirmPasswordController,
                     hideText: true,
                     hintText: "Confirm Password",
                     prefixicon: Icons.lock,
@@ -99,14 +120,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   MyButton(
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
-                        if (authProvider.passwordController.text !=
-                            authProvider.confirmPasswordController.text) {
+                        if (passwordController.text !=
+                            confirmPasswordController.text) {
                           Get.rawSnackbar(
                               message:
                                   "Confirm password did not match with password!");
                         } else {
-                          authProvider.signUp();
-                          Get.offAll(() => const LandingPage());
+                          authProvider.signUp(
+                              nameController.text.trim(),
+                              emailController.text.trim(),
+                              phoneController.text.trim(),
+                              passwordController.text.trim(),
+                              widget.signupOptionModel.name);
+                          Get.offAll(() => const CheckLoggedInUser());
                           Get.rawSnackbar(message: "Signed up successfully!");
                         }
                       }

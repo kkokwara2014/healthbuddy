@@ -40,6 +40,13 @@ class _DocLandingPageState extends State<DocLandingPage> {
     UserModel? userdata = Provider.of<UserProvider>(context).getuser;
     if (userdata != null) {
       return Scaffold(
+        appBar: AppBar(
+          title: Text(pageIndex == 0
+              ? "Dashboard"
+              : pageIndex == 1
+                  ? "Appointments"
+                  : "Profile"),
+        ),
         drawer: Drawer(
           child: ListView(
             padding: const EdgeInsets.only(top: 0),

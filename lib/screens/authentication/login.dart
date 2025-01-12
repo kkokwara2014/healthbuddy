@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:health_buddy/constants/images.dart';
 import 'package:health_buddy/providers/auth_provider.dart';
-import 'package:health_buddy/screens/authentication/register.dart';
-import 'package:health_buddy/screens/dashboard/landing_page.dart';
+import 'package:health_buddy/screens/authentication/check_loggedin.dart';
+import 'package:health_buddy/screens/authentication/sign_up_options.dart';
 import 'package:health_buddy/widgets/button_widget.dart';
 import 'package:health_buddy/widgets/text_input.dart';
 import 'package:provider/provider.dart';
@@ -17,6 +17,16 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
+
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +59,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     height: 15,
                   ),
                   MyTextInput(
-                    controller: authProvider.emailController,
+                    controller: emailController,
                     hideText: false,
                     hintText: "Email",
                     prefixicon: Icons.email,
@@ -59,7 +69,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     height: 10,
                   ),
                   MyTextInput(
-                    controller: authProvider.passwordController,
+                    controller: passwordController,
                     hideText: true,
                     hintText: "Password",
                     prefixicon: Icons.lock,
@@ -72,8 +82,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     onPressed: () async {
                       // Get.to(() => const LandingPage());
                       if (_formKey.currentState!.validate()) {
-                        await authProvider.signIn();
-                        Get.offAll(() => const LandingPage());
+                        await authProvider.signIn(emailController.text.trim(),
+                            passwordController.text.trim());
+                        Get.offAll(() => const CheckLoggedInUser());
                         Get.rawSnackbar(message: "Login successful!");
                       }
                     },
@@ -88,7 +99,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       const Text("Don't have an account? "),
                       TextButton(
                           onPressed: () {
-                            Get.to(() => const RegisterScreen());
+                            // Get.to(() => const RegisterScreen());
+                            Get.to(() => const SignUpOptionScreen());
                           },
                           child: const Text("Sign Up")),
                     ],

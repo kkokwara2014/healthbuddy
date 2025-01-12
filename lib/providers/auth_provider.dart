@@ -11,34 +11,24 @@ class AuthProvider extends ChangeNotifier {
   User? get currentUser => _auth.currentUser;
   bool get isSignedIn => currentUser != null;
 
-  //getting inputs from the user
-  final TextEditingController nameController = TextEditingController();
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController phoneController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmPasswordController =
-      TextEditingController();
-
-  Future<void> signIn() async {
-    await _auth.signInWithEmailAndPassword(
-        email: emailController.text.trim(),
-        password: passwordController.text.trim());
+  Future<void> signIn(String email, String password) async {
+    await _auth.signInWithEmailAndPassword(email: email, password: password);
     notifyListeners();
   }
 
-  Future<void> signUp() async {
+  Future<void> signUp(String name, String email, String phone, String password,
+      String rolename) async {
     UserCredential uc = await _auth.createUserWithEmailAndPassword(
-        email: emailController.text.trim(),
-        password: passwordController.text.trim());
+        email: email, password: password);
 
     //create an instance of the user
     final newUser = UserModel(
         uid: uc.user!.uid,
-        name: nameController.text.trim(),
-        email: emailController.text.trim(),
-        phone: phoneController.text.trim(),
-        password: passwordController.text.trim(),
-        role: "User",
+        name: name,
+        email: email,
+        phone: phone,
+        password: password,
+        role: rolename,
         userimage: userImage);
     await _firestore.collection("users").doc(uc.user!.uid).set(newUser.toMap());
     notifyListeners();

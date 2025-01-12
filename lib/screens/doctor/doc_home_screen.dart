@@ -11,10 +11,6 @@ class _DocHomeScreenState extends State<DocHomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Dashboard"),
-      ),
-      drawer: const Drawer(),
       body: const Center(
         child: Text("Home Screen"),
       ),
