@@ -34,7 +34,7 @@ class AppointmentProvider extends ChangeNotifier {
         apptdate: apptdate,
         ishandled: false,
         iscancelled: false,
-        created: DateTime.now().toString());
+        created: DateTime.now().toString().split(" ")[0]);
     await _firestore.collection("appointments").add(newAppointment.toMap());
     notifyListeners();
   }

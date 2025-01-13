@@ -6,7 +6,11 @@ import 'package:health_buddy/constants/images.dart';
 import 'package:health_buddy/models/user_model.dart';
 import 'package:health_buddy/models/vital_sign_model.dart';
 import 'package:health_buddy/screens/dashboard/doctors_list_screen.dart';
-import 'package:health_buddy/screens/dashboard/vital_sign_detail.dart';
+import 'package:health_buddy/screens/dashboard/vsign_category/bloodpressure_screen.dart';
+import 'package:health_buddy/screens/dashboard/vsign_category/bmi_screen.dart';
+import 'package:health_buddy/screens/dashboard/vsign_category/body_temperature_screen.dart';
+import 'package:health_buddy/screens/dashboard/vsign_category/heart_rate_screen.dart';
+import 'package:health_buddy/screens/dashboard/vsign_category/respiratory_rate_screen.dart';
 import 'package:health_buddy/screens/dashboard/vsign_category/vital_sign_category.dart';
 import 'package:health_buddy/widgets/doctor_list_tile_widget.dart';
 import 'package:health_buddy/widgets/vital_sign_widget.dart';
@@ -46,8 +50,20 @@ class _HomeScreenState extends State<HomeScreen> {
                   final vSign = _vitalSigns[index];
                   return GestureDetector(
                     onTap: () {
-                      Get.to(
-                          () => VitalSignDetailScreen(vitalSignModel: vSign));
+                      if (vSign.storedname == "bloodpressures") {
+                        Get.to(
+                            () => BloodPressureScreen(vitalSignModel: vSign));
+                      } else if (vSign.storedname == "heartrates") {
+                        Get.to(() => HeartRateScreen(vitalSignModel: vSign));
+                      } else if (vSign.storedname == "respiratoryrates") {
+                        Get.to(
+                            () => RespiratoryRateScreen(vitalSignModel: vSign));
+                      } else if (vSign.storedname == "bodytemperatures") {
+                        Get.to(
+                            () => BodyTemperatureScreen(vitalSignModel: vSign));
+                      } else if (vSign.storedname == "bmis") {
+                        Get.to(() => BMIScreen(vitalSignModel: vSign));
+                      }
                     },
                     child: VitalSignWidget(vsign: vSign),
                   );

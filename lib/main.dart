@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:health_buddy/constants/color.dart';
 import 'package:health_buddy/providers/appointment_provider.dart';
 import 'package:health_buddy/providers/auth_provider.dart';
+import 'package:health_buddy/providers/bmi_provider.dart';
 import 'package:health_buddy/providers/user_provider.dart';
 import 'package:health_buddy/screens/authentication/check_loggedin.dart';
 import 'package:provider/provider.dart';
@@ -38,6 +39,7 @@ class MyApp extends StatelessWidget {
             create: (context) => UserProvider()),
         ChangeNotifierProvider<AppointmentProvider>(
             create: (context) => AppointmentProvider()),
+        ChangeNotifierProvider<BMIProvider>(create: (context) => BMIProvider()),
       ],
       child: GetMaterialApp(
         debugShowCheckedModeBanner: false,
