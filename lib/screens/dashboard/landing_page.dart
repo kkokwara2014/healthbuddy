@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:health_buddy/constants/color.dart';
 import 'package:health_buddy/models/user_model.dart';
-import 'package:health_buddy/providers/auth_provider.dart';
+import 'package:health_buddy/providers/auth_user_provider.dart';
 import 'package:health_buddy/providers/user_provider.dart';
 import 'package:health_buddy/screens/authentication/check_loggedin.dart';
 import 'package:health_buddy/screens/dashboard/appointment_screen.dart';
@@ -47,7 +47,7 @@ class _LandingPageState extends State<LandingPage> {
   @override
   Widget build(BuildContext context) {
     UserModel? userdata = Provider.of<UserProvider>(context).getuser;
-    final authProvider = Provider.of<AuthProvider>(context);
+    final authProvider = Provider.of<AuthUserProvider>(context);
 
     if (userdata != null) {
       return Scaffold(
@@ -97,7 +97,7 @@ class _LandingPageState extends State<LandingPage> {
   }
 
   Drawer myDrawer(
-      UserModel userdata, BuildContext context, AuthProvider authProvider) {
+      UserModel userdata, BuildContext context, AuthUserProvider authProvider) {
     return Drawer(
       child: ListView(
         padding: const EdgeInsets.only(top: 0),

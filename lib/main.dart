@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:health_buddy/constants/color.dart';
 import 'package:health_buddy/providers/appointment_provider.dart';
-import 'package:health_buddy/providers/auth_provider.dart';
+import 'package:health_buddy/providers/auth_user_provider.dart';
 import 'package:health_buddy/providers/bmi_provider.dart';
 import 'package:health_buddy/providers/user_provider.dart';
 import 'package:health_buddy/screens/authentication/check_loggedin.dart';
@@ -33,8 +33,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider<AuthProvider>(
-            create: (context) => AuthProvider()),
+        ChangeNotifierProvider<AuthUserProvider>(
+            create: (context) => AuthUserProvider()),
         ChangeNotifierProvider<UserProvider>(
             create: (context) => UserProvider()),
         ChangeNotifierProvider<AppointmentProvider>(

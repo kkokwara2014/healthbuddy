@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:health_buddy/constants/color.dart';
 import 'package:health_buddy/models/user_model.dart';
-import 'package:health_buddy/providers/auth_provider.dart';
+import 'package:health_buddy/providers/auth_user_provider.dart';
 import 'package:health_buddy/providers/user_provider.dart';
 import 'package:health_buddy/screens/authentication/check_loggedin.dart';
 
@@ -40,7 +40,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final authProvider = Provider.of<AuthProvider>(context);
+    final authProvider = Provider.of<AuthUserProvider>(context);
     UserModel? userdata = Provider.of<UserProvider>(context).getuser;
     final userProvider = Provider.of<UserProvider>(context);
 

@@ -1,7 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:health_buddy/constants/images.dart';
-import 'package:health_buddy/providers/auth_provider.dart';
+import 'package:health_buddy/constants/loading.dart';
+import 'package:health_buddy/providers/auth_user_provider.dart';
 import 'package:health_buddy/screens/authentication/check_loggedin.dart';
 import 'package:health_buddy/screens/authentication/sign_up_options.dart';
 import 'package:health_buddy/widgets/button_widget.dart';
@@ -30,7 +32,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final authProvider = Provider.of<AuthProvider>(context);
+    final authProvider = Provider.of<AuthUserProvider>(context);
     return Scaffold(
       body: Center(
         child: SingleChildScrollView(
@@ -80,12 +82,19 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   MyButton(
                     onPressed: () async {
-                      // Get.to(() => const LandingPage());
                       if (_formKey.currentState!.validate()) {
-                        await authProvider.signIn(emailController.text.trim(),
-                            passwordController.text.trim());
-                        Get.offAll(() => const CheckLoggedInUser());
-                        Get.rawSnackbar(message: "Login successful!");
+                        showLoadingDialog(context);
+                        try {
+                          await authProvider.signIn(emailController.text.trim(),
+                              passwordController.text.trim());
+                          Get.offAll(() => const CheckLoggedInUser());
+                          Get.rawSnackbar(message: "Login successful!");
+                        } on FirebaseAuthException catch (e) {
+                          Get.rawSnackbar(message: e.toString());
+                        }
+                        // if (mounted) {
+                        // hideLoadingDialog(context);
+                        // }
                       }
                     },
                     text: "Sign In",

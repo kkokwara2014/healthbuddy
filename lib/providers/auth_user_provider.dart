@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:health_buddy/constants/images.dart';
 import 'package:health_buddy/models/user_model.dart';
 
-class AuthProvider extends ChangeNotifier {
+class AuthUserProvider extends ChangeNotifier {
   final _auth = FirebaseAuth.instance;
   final _firestore = FirebaseFirestore.instance;
 

@@ -1,8 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:health_buddy/constants/images.dart';
+import 'package:health_buddy/constants/loading.dart';
 import 'package:health_buddy/models/signup_option_model.dart';
-import 'package:health_buddy/providers/auth_provider.dart';
+import 'package:health_buddy/providers/auth_user_provider.dart';
 import 'package:health_buddy/screens/authentication/check_loggedin.dart';
 import 'package:health_buddy/screens/authentication/login.dart';
 import 'package:health_buddy/widgets/button_widget.dart';
@@ -40,7 +43,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final authProvider = Provider.of<AuthProvider>(context);
+    final authProvider = Provider.of<AuthUserProvider>(context);
     return Scaffold(
       body: Center(
         child: SingleChildScrollView(
@@ -93,6 +96,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     hintText: "Phone",
                     prefixicon: Icons.phone,
                     textInputType: TextInputType.phone,
+                    inputFormatters: [LengthLimitingTextInputFormatter(11)],
                   ),
                   const SizedBox(
                     height: 10,
@@ -126,14 +130,23 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               message:
                                   "Confirm password did not match with password!");
                         } else {
-                          authProvider.signUp(
-                              nameController.text.trim(),
-                              emailController.text.trim(),
-                              phoneController.text.trim(),
-                              passwordController.text.trim(),
-                              widget.signupOptionModel.name);
-                          Get.offAll(() => const CheckLoggedInUser());
-                          Get.rawSnackbar(message: "Signed up successfully!");
+                          try {
+                            showLoadingDialog(context);
+
+                            authProvider.signUp(
+                                nameController.text.trim(),
+                                emailController.text.trim(),
+                                phoneController.text.trim(),
+                                passwordController.text.trim(),
+                                widget.signupOptionModel.name);
+                            Get.offAll(() => const CheckLoggedInUser());
+                            Get.rawSnackbar(message: "Signed up successfully!");
+                            // if (mounted) {
+                            // hideLoadingDialog(context);
+                            // }
+                          } on FirebaseAuthException catch (e) {
+                            Get.rawSnackbar(message: e.toString());
+                          }
                         }
                       }
                     },
