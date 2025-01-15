@@ -6,6 +6,7 @@ import 'package:health_buddy/screens/admin/admin_landing_page.dart';
 import 'package:health_buddy/screens/dashboard/landing_page.dart';
 import 'package:health_buddy/screens/doctor/doc_landing_page.dart';
 import 'package:health_buddy/screens/onborading.dart';
+import 'package:health_buddy/widgets/loading_spinner.dart';
 
 class CheckLoggedInUser extends StatefulWidget {
   const CheckLoggedInUser({super.key});
@@ -38,7 +39,10 @@ class _CheckLoggedInUserState extends State<CheckLoggedInUser> {
                     } else if (userData?.role == "User") {
                       return const LandingPage();
                     } else {
-                      return const Onboarding();
+                      // return const Onboarding();
+                      return const LoadingSpinner(
+                        text: "",
+                      );
                     }
                   } else if (snapshot.connectionState ==
                       ConnectionState.waiting) {
@@ -46,7 +50,10 @@ class _CheckLoggedInUserState extends State<CheckLoggedInUser> {
                       child: Center(child: CircularProgressIndicator()),
                     );
                   } else {
-                    return const Onboarding();
+                    // return const Onboarding();
+                    return const LoadingSpinner(
+                      text: "",
+                    );
                   }
                 });
           }
