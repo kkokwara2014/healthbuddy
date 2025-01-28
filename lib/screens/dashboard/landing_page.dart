@@ -7,6 +7,7 @@ import 'package:health_buddy/providers/user_provider.dart';
 import 'package:health_buddy/screens/authentication/check_loggedin.dart';
 import 'package:health_buddy/screens/dashboard/appointment_screen.dart';
 import 'package:health_buddy/screens/dashboard/home_screen.dart';
+import 'package:health_buddy/screens/dashboard/visit_doctor/visits_screen.dart';
 import 'package:health_buddy/screens/profile/profile_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -29,6 +30,7 @@ class _LandingPageState extends State<LandingPage> {
         color: pkColor,
       ),
     ),
+    const VisitsScreen(),
     const ProfileScreen(),
   ];
 
@@ -58,7 +60,9 @@ class _LandingPageState extends State<LandingPage> {
                   ? "Appointments"
                   : pageIndex == 2
                       ? "Notifications"
-                      : "Profile"),
+                      : pageIndex == 3
+                          ? "Visits"
+                          : "Profile"),
           actions: [
             IconButton(
               onPressed: () {},
@@ -85,6 +89,8 @@ class _LandingPageState extends State<LandingPage> {
                   icon: Icon(Icons.calendar_month), label: "Appointments"),
               BottomNavigationBarItem(
                   icon: Icon(Icons.notifications), label: "Notifications"),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.directions_walk), label: "Visits"),
               BottomNavigationBarItem(
                   icon: Icon(Icons.person_2_outlined), label: "Profile"),
             ]),

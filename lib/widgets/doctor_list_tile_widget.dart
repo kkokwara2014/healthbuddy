@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:health_buddy/constants/color.dart';
 import 'package:health_buddy/models/user_model.dart';
 import 'package:health_buddy/screens/dashboard/appointments/book_appointment_screen.dart';
+import 'package:health_buddy/screens/dashboard/visit_doctor/visit_doctor_screen.dart';
 
 class DoctorListTileWidget extends StatelessWidget {
   const DoctorListTileWidget({
@@ -21,6 +22,11 @@ class DoctorListTileWidget extends StatelessWidget {
             doctor: doctor,
           ),
         );
+      },
+      onLongPress: () {
+        Get.to(() => VisitDoctorScreen(
+              doctor: doctor,
+            ));
       },
       leading: ClipRRect(
         borderRadius: BorderRadius.circular(100),

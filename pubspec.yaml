@@ -41,14 +41,20 @@ dependencies:
   provider:
   get:
   flutter_native_splash:
-  flutter_launcher_icons:
   flutterflow_paginate_firestore:
   dropdown_search:
   flutter_spinkit:
+  table_calendar:
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons:
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/health_logo.png"
+  
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

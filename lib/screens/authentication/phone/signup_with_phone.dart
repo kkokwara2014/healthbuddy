@@ -1,43 +1,56 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:health_buddy/constants/images.dart';
-import 'package:health_buddy/providers/auth_user_provider.dart';
-import 'package:health_buddy/screens/authentication/check_loggedin.dart';
+import 'package:health_buddy/screens/authentication/phone/verify_otp_screen.dart';
+import 'package:health_buddy/screens/authentication/sign_up_options.dart';
 import 'package:health_buddy/widgets/button_widget.dart';
 import 'package:health_buddy/widgets/loading_spinner.dart';
 import 'package:health_buddy/widgets/text_input.dart';
-import 'package:provider/provider.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class SignupWithPhoneScreen extends StatefulWidget {
+  const SignupWithPhoneScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<SignupWithPhoneScreen> createState() => _SignupWithPhoneScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _SignupWithPhoneScreenState extends State<SignupWithPhoneScreen> {
   final _formKey = GlobalKey<FormState>();
 
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
+  final phoneController = TextEditingController();
 
   //laoding variable
   bool isLoading = false;
 
   @override
   void dispose() {
-    emailController.dispose();
-    passwordController.dispose();
+    phoneController.dispose();
+
     super.dispose();
+  }
+
+  Future<void> submitPhone(BuildContext context) async {
+    final auth = FirebaseAuth.instance;
+    await auth.verifyPhoneNumber(
+        verificationCompleted: (PhoneAuthCredential cred) {},
+        verificationFailed: (FirebaseAuthException e) {
+          print(e.message.toString());
+        },
+        codeSent: (String verificationId, int? resendToken) {
+          Get.to(() => VerifyOTPScreen(
+                verificationId: verificationId,
+              ));
+        },
+        codeAutoRetrievalTimeout: (String verificationId) {});
   }
 
   @override
   Widget build(BuildContext context) {
-    final authProvider = Provider.of<AuthUserProvider>(context);
     return isLoading
         ? const LoadingSpinner(
-            text: "Signing in...",
+            text: "Authenticating phone...",
           )
         : Scaffold(
             body: Center(
@@ -57,7 +70,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           height: 10,
                         ),
                         const Text(
-                          "Sign In",
+                          "Phone Authentication",
                           style: TextStyle(
                             fontSize: 22,
                             fontWeight: FontWeight.w700,
@@ -67,21 +80,14 @@ class _LoginScreenState extends State<LoginScreen> {
                           height: 15,
                         ),
                         MyTextInput(
-                          controller: emailController,
+                          controller: phoneController,
                           hideText: false,
-                          hintText: "Email",
-                          prefixicon: Icons.email,
-                          textInputType: TextInputType.emailAddress,
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        MyTextInput(
-                          controller: passwordController,
-                          hideText: true,
-                          hintText: "Password",
-                          prefixicon: Icons.lock,
-                          textInputType: TextInputType.text,
+                          hintText: "Phone",
+                          prefixicon: Icons.phone,
+                          textInputType: TextInputType.phone,
+                          inputFormatters: [
+                            LengthLimitingTextInputFormatter(15)
+                          ],
                         ),
                         const SizedBox(
                           height: 15,
@@ -93,14 +99,12 @@ class _LoginScreenState extends State<LoginScreen> {
                                 setState(() {
                                   isLoading = true;
                                 });
-                                await authProvider.signIn(
-                                    emailController.text.trim(),
-                                    passwordController.text.trim());
+                                //call the method for sending OTP here
+                                submitPhone(context);
                                 setState(() {
                                   isLoading = false;
                                 });
-                                Get.offAll(() => const CheckLoggedInUser());
-                                Get.rawSnackbar(message: "Login successful!");
+                                // Get.offAll(() => const CheckLoggedInUser());
                               } on FirebaseAuthException catch (e) {
                                 setState(() {
                                   isLoading = false;
@@ -114,37 +118,16 @@ class _LoginScreenState extends State<LoginScreen> {
                         const SizedBox(
                           height: 8,
                         ),
-                        const Row(
+                        Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Column(
-                              children: [
-                                Text("Don't have an account? "),
-                                // const SizedBox(
-                                //   height: 10,
-                                // ),
-                                // MyButton(
-                                //     onPressed: () {
-                                //       Get.to(() => const SignUpOptionScreen());
-                                //     },
-                                //     text: "Sign up with Email"),
-                                // const SizedBox(
-                                //   height: 10,
-                                // ),
-                                // MyButton(
-                                //     onPressed: () {
-                                //       Get.to(
-                                //           () => const SignupWithPhoneScreen());
-                                //     },
-                                //     text: "Sign up with Phone")
-                                // TextButton(
-                                //     onPressed: () {
-                                //       // Get.to(() => const RegisterScreen());
-                                //       Get.to(() => const SignUpOptionScreen());
-                                //     },
-                                //     child: const Text("Sign Up")),
-                              ],
-                            ),
+                            const Text("Don't have an account? "),
+                            TextButton(
+                                onPressed: () {
+                                  // Get.to(() => const RegisterScreen());
+                                  Get.to(() => const SignUpOptionScreen());
+                                },
+                                child: const Text("Sign Up")),
                           ],
                         )
                       ],
