@@ -31,6 +31,7 @@ class AppointmentProvider extends ChangeNotifier {
         docemail: docemail,
         docphone: docphone,
         docimage: docimage,
+        doccomment: "",
         apptdate: apptdate,
         ishandled: false,
         iscancelled: false,
@@ -41,6 +42,18 @@ class AppointmentProvider extends ChangeNotifier {
 
   Future<void> deleteAppointment(String apptId) async {
     await _firestore.collection("appointments").doc(apptId).delete();
+    notifyListeners();
+  }
+
+  //handle appointment by Doctor,
+  Future<void> handleAppointmentByDoctor(
+      AppointmentModel apptmodel, String comment) async {
+    if (comment.isNotEmpty) {
+      await _firestore.collection("appointments").doc(apptmodel.id).update({
+        "ishandled": true,
+        "doccomment": comment,
+      });
+    }
     notifyListeners();
   }
 }

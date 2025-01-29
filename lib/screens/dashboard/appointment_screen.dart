@@ -115,6 +115,23 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                                   )
                                 ],
                               ),
+                              // const SizedBox(height: 5,),
+                              appointment.ishandled
+                                  ? Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text("Doctor's comment"),
+                                        Text(
+                                          appointment.doccomment!,
+                                          style: TextStyle(
+                                            fontStyle: FontStyle.italic,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                      ],
+                                    )
+                                  : Container(),
                             ],
                           ),
                         ),

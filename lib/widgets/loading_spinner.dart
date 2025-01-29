@@ -36,9 +36,9 @@ class LoadingSpinner extends StatelessWidget {
             const SizedBox(
               height: 10,
             ),
-            const SpinKitChasingDots(
+            const SpinKitWaveSpinner(
               color: pkColor,
-              size: 40,
+              size: 60,
             ),
           ],
         ),

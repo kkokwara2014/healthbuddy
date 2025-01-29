@@ -16,6 +16,7 @@ class AppointmentModel {
   final String docemail;
   final String docphone;
   final String docimage;
+  final String? doccomment;
   final String apptdate;
   final bool ishandled;
   final bool iscancelled;
@@ -34,6 +35,7 @@ class AppointmentModel {
       required this.docemail,
       required this.docphone,
       required this.docimage,
+      this.doccomment,
       required this.apptdate,
       required this.ishandled,
       required this.iscancelled,
@@ -52,6 +54,7 @@ class AppointmentModel {
       'docemail': docemail,
       'docphone': docphone,
       'docimage': docimage,
+      'doccomment': doccomment,
       'apptdate': apptdate,
       'ishandled': ishandled,
       'iscancelled': iscancelled,
@@ -73,6 +76,7 @@ class AppointmentModel {
       docemail: map['docemail'] as String,
       docphone: map['docphone'] as String,
       docimage: map['docimage'] as String,
+      doccomment: map['doccomment'] as String,
       apptdate: map['apptdate'] as String,
       ishandled: map['ishandled'] as bool,
       iscancelled: map['iscancelled'] as bool,
@@ -93,6 +97,7 @@ class AppointmentModel {
       docemail: map['docemail'] as String,
       docphone: map['docphone'] as String,
       docimage: map['docimage'] as String,
+      doccomment: map['doccomment'] as String,
       apptdate: map['apptdate'] as String,
       ishandled: map['ishandled'] as bool,
       iscancelled: map['iscancelled'] as bool,
